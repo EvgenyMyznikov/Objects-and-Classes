@@ -1,31 +1,45 @@
-class Album(Track):
-    def __init__(self, band, album, track_list):
+class Track:
+    def __init__(self, name='', duration=0):
+        self.name = name
+        self.duration = duration
+
+    def show(self):
+        return f'{self.name} - {self.duration}'
+
+
+class Album:
+    def __init__(self, band='', name=''):
         self.band = band
-        self.album = album
-        self.track_list = track_list
+        self.name = name
+        self.tracks = []
 
-        album_1 = Album("Metallica", "...And Justice for All", track_list)
-        album_2 = Album("Wolfheart", "Winterborn", track_list)
-        album_1.track_list = [{"The Shortest Straw": 7}, {"Harvester of Sorrow": 6}, {"To Live Is to Die": 10}]
-        album_2.track_list = [{"The Hunt": 5}, {"Gale Of Winter": 5}, {"Ghosts Of Karelia": 5}]
+    def get_tracks(self):
+        return [track.show() for track in self.tracks]
 
-    def get_tracks(self, track_list):
-        for i in track_list:
-            for track_name, track_duration in i.items():
-                print(f'{track_name} - {track_duration}')
-                return f'{track_name} - {track_duration}'
+    def get_duration(self):
+        return sum([track.duration for track in self.tracks])
 
-    def add_track(self, track_list):
-        new_track = ""
-        new_duration = 0
-        track_list.append([new_track, new_duration])
-        return "new track"
+    def add_track(self, track):
+        if not isinstance(track, Track):
+            raise NotImplementedError('Can not add this object to track list!')
+        self.tracks.append(track)
 
-    def get_duration(self, track_list):
-        sum_track_duration = 0
-        for elem in track_list:
-            for track_name, track_duration in elem.items():
-                sum_track_duration += track_duration
-                print(sum_track_duration)
-        return sum_track_duration
 
+albums = []
+album = Album("Metallica", "...And Justice for All")
+album.add_track(Track("The Shortest Straw", 7))
+album.add_track(Track("Harvester of Sorrow", 6))
+album.add_track(Track("To Live Is to Die", 10))
+albums.append(album)
+
+album = Album("Wolfheart", "Winterborn")
+album.add_track(Track("The Hunt", 5))
+album.add_track(Track("Gale Of Winter", 5))
+album.add_track(Track("Ghosts Of Karelia", 5))
+albums.append(album)
+
+for album in albums:
+    print(f'Album "{album.name}" of band {album.band}:')
+    for track in enumerate(album.get_tracks(), 1):
+        print(f'{track[0]}. {track[1]}')
+    print(f'Album total length: {album.get_duration()} minutes\n')
