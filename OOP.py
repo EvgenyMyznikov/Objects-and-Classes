@@ -36,13 +36,13 @@ class Duck(Poultry):
         return "Krya-Krya!"
 
 
-class livestock(Animals):
+class Livestock(Animals):
 
     def we_get(self):
         return "wool"
 
 
-class Cow(livestock):
+class Cow(Livestock):
     species = "Cow"
 
     def we_get(self):
@@ -52,14 +52,14 @@ class Cow(livestock):
         return "Muu!"
 
 
-class Ram(livestock):
+class Ram(Livestock):
     species = "Ram"
 
     def voice(self):
         return "Bee!"
 
 
-class Goat(livestock):
+class Goat(Livestock):
     species = "Goat"
 
     def we_get(self):
