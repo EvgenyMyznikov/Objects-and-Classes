@@ -9,19 +9,19 @@ def read_files(file_name):
         return words_list
 
 
-def count_len_words(words_list):
+def count_len_words(words_list, len_words=6):
     long_words = []
     for word in words_list:
-        if len(word) > 6:
+        if len(word) > len_words:
             long_words.append(word)
     return long_words
 
 
-def sort_top_words(long_words):
+def sort_top_words(long_words, k=10):
     from collections import Counter
     top_list = Counter(long_words)
     top_10_list = sorted(top_list.items(), key=lambda x: x[1], reverse=True)
-    top_10_words = top_10_list[0:10]
+    top_10_words = top_10_list[0:k]
     return top_10_words
 
 
