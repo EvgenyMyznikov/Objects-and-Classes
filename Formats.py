@@ -6,11 +6,11 @@ import xml.etree.ElementTree as Et
 def read_json(file_name):
     with open(file_name) as file:
         json_data = json.load(file)
-        original_text = ''
-        for items in json_data['rss']['channel']['items']:
-            original_text += items['description']
-            words_list = original_text.lower().split(' ')
-        return words_list
+    original_text = ''
+    for items in json_data['rss']['channel']['items']:
+        original_text += items['description']
+    words_list = original_text.lower().strip().split()
+    return words_list
 
 
 def read_xml(file_name):
@@ -21,7 +21,7 @@ def read_xml(file_name):
     original_text = ''
     for item in items:
         original_text += item.find('description').text
-        words_list = original_text.lower().split(' ')
+    words_list = original_text.lower().strip().split()
     return words_list
 
 
@@ -35,24 +35,24 @@ def count_len_words(words_list, len_words=6):
 
 def sort_top_words(long_words, len_top=10):
     top_list = Counter(long_words)
-    repeat_list = sorted(top_list.items(), key=lambda x: x[1], reverse=True)
-    top_repeat_words = repeat_list[0:len_top]
-    return top_repeat_words
+    return top_list.most_common(len_top)
 
 
 def main():
-    file_name = input('Enter file name:  ')
-    if file_name == 'newsafr.xml':
-        print('File processing in progress ...')
-        top_repeat_words = sort_top_words(count_len_words(read_xml(file_name)))
-        for i in top_repeat_words:
-            print(i[0], ':', i[1])
-    elif file_name == 'newsafr.json':
-        top_repeat_words = sort_top_words(count_len_words(read_json(file_name)))
-        for i in top_repeat_words:
-            print(i[0], ':', i[1])
-    else:
-        print('Incorrect entry, repeat.')
+    while True:
+        file_name = input('Enter file name:  ')
+        data = False
+        if ".xml" in file_name:
+            print('File processing in progress ...')
+            data = read_xml(file_name)
+        elif ".json" in file_name:
+            data = read_json(file_name)
+        else:
+            print('Incorrect entry, repeat.')
+        if data:
+            top_repeat_words = sort_top_words(count_len_words(data))
+            for i in top_repeat_words:
+                print(i[0], ':', i[1])
 
 
 main()
